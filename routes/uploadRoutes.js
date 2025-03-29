@@ -1,14 +1,19 @@
 const express = require("express");
 const multer = require("multer");
 const s3 = require("../config/awsConfig");
-const router = express.Router();
 const path = require("path");
+const router = express.Router();
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 
 // Konfigurasi Multer (menyimpan file ke memori sebelum diupload ke S3)
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+// Route untuk menampilkan halaman index.html
+router.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../views/index.html"));
+});
 
 // Upload file ke S3
 router.post("/upload", upload.single("image"), async (req, res) => {
